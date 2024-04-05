@@ -1,8 +1,10 @@
 package br.com.helio.services;
 
 import br.com.helio.data.vo.v1.PersonVO;
+import br.com.helio.data.vo.v2.PersonVOV2;
 import br.com.helio.exceptions.ResourceNotFoundException;
 import br.com.helio.mapper.DozerMapper;
+import br.com.helio.mapper.custom.PersonMapper;
 import br.com.helio.model.Person;
 import br.com.helio.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,10 @@ public class PersonServices {
     @Autowired
     PersonRepository repository;
 
-    private Logger logger = Logger.getLogger(PersonServices.class.getName());
+    @Autowired
+    PersonMapper mapper;
+
+    private final Logger logger = Logger.getLogger(PersonServices.class.getName());
 
     public List<PersonVO> findAll() {
         logger.info("Finding all people");
@@ -40,6 +45,13 @@ public class PersonServices {
 
         var entity = DozerMapper.parseObject(person, Person.class);
         return DozerMapper.parseObject(repository.save(entity), PersonVO.class);
+    }
+
+    public PersonVOV2 createV2(PersonVOV2 person) {
+
+        logger.info("Creating one person with V2!");
+        var entity = mapper.convertVoToEntity(person);
+        return  mapper.convertEntityToVo(repository.save(entity));
     }
 
     public PersonVO update(PersonVO person) {
