@@ -1,14 +1,16 @@
 package br.com.helio.unittests.mapper;
 
-import br.com.helio.data.vo.v1.PersonVO;
-import br.com.helio.mapper.DozerMapper;
-import br.com.helio.model.Person;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import br.com.helio.data.vo.v1.PersonVO;
+import br.com.helio.mapper.DozerMapper;
+import br.com.helio.model.Person;
+import br.com.helio.unittests.mapper.mocks.MockPerson;
 
 public class DozerConverterTest {
     

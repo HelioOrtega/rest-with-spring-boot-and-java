@@ -1,10 +1,10 @@
-package br.com.helio.unittests.mapper;
-
-import br.com.helio.data.vo.v1.PersonVO;
-import br.com.helio.model.Person;
+package br.com.helio.unittests.mapper.mocks;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import br.com.helio.data.vo.v1.PersonVO;
+import br.com.helio.model.Person;
 
 public class MockPerson {
 

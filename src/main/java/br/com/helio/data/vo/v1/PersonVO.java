@@ -1,8 +1,7 @@
 package br.com.helio.data.vo.v1;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.io.Serializable;
+
 public class PersonVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
