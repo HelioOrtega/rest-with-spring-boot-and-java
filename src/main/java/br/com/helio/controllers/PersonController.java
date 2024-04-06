@@ -58,11 +58,11 @@ public class PersonController {
 		consumes = {
 				MediaType.APPLICATION_JSON,
 				MediaType.APPLICATION_XML,
-				MediaType.APPLICATION_YML  },
+				MediaType.APPLICATION_YML },
 		produces = {
 				MediaType.APPLICATION_JSON,
 				MediaType.APPLICATION_XML,
-				MediaType.APPLICATION_YML  })
+				MediaType.APPLICATION_YML })
 	public PersonVO update(@RequestBody PersonVO person) {
 		return service.update(person);
 	}
