@@ -1,7 +1,6 @@
 package br.com.helio.unittests.mockito;
 
 import br.com.helio.data.vo.v1.PersonVO;
-import br.com.helio.exceptions.ExceptionResponse;
 import br.com.helio.exceptions.RequiredObjectIsNullException;
 import br.com.helio.model.Person;
 import br.com.helio.repositories.PersonRepository;
@@ -11,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -100,21 +100,21 @@ class PersonServicesTest {
 
     @Test
     void testCreate() {
-        Person entity = input.mockEntity(1);
-
-        Person persisted = entity;
+        Person persisted = input.mockEntity(1);
         persisted.setId(1L);
 
         PersonVO vo = input.mockVO(1);
         vo.setKey(1L);
 
-        when(repository.save(entity)).thenReturn(persisted);
+        when(repository.save(ArgumentMatchers.any(Person.class))).thenReturn(persisted);
 
         var result = service.create(vo);
+
         assertNotNull(result);
         assertNotNull(result.getKey());
         assertNotNull(result.getLinks());
-        assertTrue(result.toString().contains("links: [</api/person/v1/1>;rel=\"self\""));
+
+        assertTrue(result.toString().contains("links: [</api/person/v1/1>;rel=\"self\"]"));
         assertEquals("Addres Test1", result.getAddress());
         assertEquals("First Name Test1", result.getFirstName());
         assertEquals("Last Name Test1", result.getLastName());
