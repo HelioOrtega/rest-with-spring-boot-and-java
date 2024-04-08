@@ -26,7 +26,7 @@ public class AuthServices {
 	private UserRepository repository;
 	
 	@SuppressWarnings("rawtypes")
-	public ResponseEntity signin(AccountCredentialsVO data) {
+	public ResponseEntity signIn(AccountCredentialsVO data) {
 		try {
 			var username = data.getUsername();
 			var password = data.getPassword();
