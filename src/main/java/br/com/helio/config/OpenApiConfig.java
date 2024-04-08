@@ -1,11 +1,11 @@
 package br.com.helio.config;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.info.License;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 
 @Configuration
 public class OpenApiConfig {
@@ -14,9 +14,9 @@ public class OpenApiConfig {
     OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("RESTful API with Java 21 and Spring Boot 3.2.0")
+                        .title("REST API's RESTful from 0 to AWS  with Java 21,  Spring Boot 3.2.0 and Docker")
                         .version("v1")
-                        .description("REST with Spring Boot and Java")
+                        .description("Some description about your API")
                         .termsOfService("https://github.com/HelioOrtega")
                         .license(
                                 new License()

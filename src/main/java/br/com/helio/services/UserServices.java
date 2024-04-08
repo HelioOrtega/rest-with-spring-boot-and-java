@@ -1,13 +1,14 @@
 package br.com.helio.services;
 
-import br.com.helio.repositories.UserRepository;
+import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.logging.Logger;
+import br.com.helio.repositories.UserRepository;
 
 @Service
 public class UserServices implements UserDetailsService {
@@ -16,7 +17,7 @@ public class UserServices implements UserDetailsService {
 	
 	@Autowired
 	UserRepository repository;
-
+	
 	public UserServices(UserRepository repository) {
 		this.repository = repository;
 	}
@@ -24,12 +25,11 @@ public class UserServices implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		logger.info("Finding one user by name " + username + "!");
-		var user = repository.findByUserName(username);
-
+		var user = repository.findByUsername(username);
 		if (user != null) {
 			return user;
-		} else  {
-			throw new UsernameNotFoundException("Username" + username + " not found!");
+		} else {
+			throw new UsernameNotFoundException("Username " + username + " not found!");
 		}
 	}
 }

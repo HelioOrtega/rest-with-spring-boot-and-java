@@ -1,5 +1,13 @@
 package br.com.helio.services;
 
+import java.util.List;
+import java.util.logging.Logger;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import org.springframework.stereotype.Service;
+
 import br.com.helio.controllers.BookController;
 import br.com.helio.data.vo.v1.BookVO;
 import br.com.helio.exceptions.RequiredObjectIsNullException;
@@ -7,15 +15,6 @@ import br.com.helio.exceptions.ResourceNotFoundException;
 import br.com.helio.mapper.DozerMapper;
 import br.com.helio.model.Book;
 import br.com.helio.repositories.BookRepository;
-import br.com.helio.repositories.PersonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.logging.Logger;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class BookServices {
@@ -27,12 +26,13 @@ public class BookServices {
 
 	public List<BookVO> findAll() {
 
-		logger.info("Finding all books!");
+		logger.info("Finding all book!");
 
-		var persons = DozerMapper.parseListObjects(repository.findAll(), BookVO.class);
-		persons
+		var books = DozerMapper.parseListObjects(repository.findAll(), BookVO.class);
+		books
+			.stream()
 			.forEach(p -> p.add(linkTo(methodOn(BookController.class).findById(p.getKey())).withSelfRel()));
-		return persons;
+		return books;
 	}
 
 	public BookVO findById(Long id) {

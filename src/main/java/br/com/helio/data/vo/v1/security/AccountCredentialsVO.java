@@ -1,45 +1,65 @@
 package br.com.helio.data.vo.v1.security;
 
 import java.io.Serializable;
-import java.util.Objects;
 
-public class AccountCredentialsVO implements Serializable {
+public class AccountCredentialsVO implements Serializable{
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
+	
+	private String username;
+	private String password;
+	
+	public AccountCredentialsVO() {}
+	
+	public AccountCredentialsVO(String username, String password) {
+		this.username = username;
+		this.password = password;
+	}
 
-    private String username;
-    private String password;
+	public String getUsername() {
+		return username;
+	}
 
-    public AccountCredentialsVO(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AccountCredentialsVO that)) return false;
-        return Objects.equals(getUsername(), that.getUsername()) && Objects.equals(getPassword(), that.getPassword());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getUsername(), getPassword());
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AccountCredentialsVO other = (AccountCredentialsVO) obj;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
 }
