@@ -1,7 +1,7 @@
 package br.com.helio.integrationtests.swagger;
 
 import br.com.helio.integrationtests.testcontainers.AbstractIntegrationTest;
-import configs.TestConfigs;
+import br.com.helio.configs.TestConfigs;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
