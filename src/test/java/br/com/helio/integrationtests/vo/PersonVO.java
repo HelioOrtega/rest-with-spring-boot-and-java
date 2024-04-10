@@ -15,7 +15,8 @@ public class PersonVO implements Serializable {
 	private String lastName;
 	private String address;
 	private String gender;
-	
+
+	private Boolean enabled;
 	public PersonVO() {}
 
 	public Long getId() {
@@ -58,15 +59,23 @@ public class PersonVO implements Serializable {
 		this.gender = gender;
 	}
 
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (!(o instanceof PersonVO personVO)) return false;
-        return Objects.equals(getId(), personVO.getId()) && Objects.equals(getFirstName(), personVO.getFirstName()) && Objects.equals(getLastName(), personVO.getLastName()) && Objects.equals(getAddress(), personVO.getAddress()) && Objects.equals(getGender(), personVO.getGender());
+        return Objects.equals(getId(), personVO.getId()) && Objects.equals(getFirstName(), personVO.getFirstName()) && Objects.equals(getLastName(), personVO.getLastName()) && Objects.equals(getAddress(), personVO.getAddress()) && Objects.equals(getGender(), personVO.getGender()) && Objects.equals(getEnabled(), personVO.getEnabled());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getId(), getFirstName(), getLastName(), getAddress(), getGender());
+		return Objects.hash(getId(), getFirstName(), getLastName(), getAddress(), getGender(), getEnabled());
 	}
 }
