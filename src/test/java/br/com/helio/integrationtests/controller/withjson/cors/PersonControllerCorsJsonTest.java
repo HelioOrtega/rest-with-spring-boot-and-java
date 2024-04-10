@@ -104,6 +104,7 @@ public class PersonControllerCorsJsonTest extends AbstractIntegrationTest {
 		assertEquals("Stallman", persistedPerson.getLastName());
 		assertEquals("New York City, New York, US", persistedPerson.getAddress());
 		assertEquals("Male", persistedPerson.getGender());
+		assertTrue(persistedPerson.getEnabled());
 	}
 
 	@Test
@@ -161,6 +162,7 @@ public class PersonControllerCorsJsonTest extends AbstractIntegrationTest {
 		assertEquals("Stallman", persistedPerson.getLastName());
 		assertEquals("New York City, New York, US", persistedPerson.getAddress());
 		assertEquals("Male", persistedPerson.getGender());
+		assertTrue(persistedPerson.getEnabled());
 	}
 
 
@@ -191,6 +193,7 @@ public class PersonControllerCorsJsonTest extends AbstractIntegrationTest {
 		person.setLastName("Stallman");
 		person.setAddress("New York City, New York, US");
 		person.setGender("Male");
+		person.setEnabled(true);
 	}
 
 }
