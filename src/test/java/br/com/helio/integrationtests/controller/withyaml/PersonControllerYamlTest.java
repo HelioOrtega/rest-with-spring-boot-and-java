@@ -6,6 +6,8 @@ import br.com.helio.integrationtests.controller.withyaml.mapper.YMLMapper;
 import br.com.helio.integrationtests.testcontainers.AbstractIntegrationTest;
 import br.com.helio.integrationtests.vo.AccountCredentialsVO;
 import br.com.helio.integrationtests.vo.PersonVO;
+import br.com.helio.integrationtests.vo.pagedmodels.PagedModelPerson;
+import br.com.helio.integrationtests.vo.wrappers.WrapperPersonVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -278,7 +280,7 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest {
 	@Order(6)
 	public void testFindAll() throws JsonProcessingException {
 
-		var content = given().spec(specification)
+		var wrapper = given().spec(specification)
 				.config(
 					RestAssuredConfig.config()
 						.encoderConfig(
@@ -288,15 +290,16 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest {
 								ContentType.TEXT)))
 				.contentType(TestConfigs.CONTENT_TYPE_YML)
 				.accept(TestConfigs.CONTENT_TYPE_YML)
+				.queryParams("page", 3, "size", 10, "direction", "asc")
 				.when()
 					.get()
 				.then()
 					.statusCode(200)
 						.extract()
 				.body()
-					.as(PersonVO[].class, objectMapper);
+					.as(PagedModelPerson.class, objectMapper);
 
-		List<PersonVO> people = Arrays.asList(content);
+		var people = wrapper.getContent();
 
 		PersonVO foundPersonOne = people.getFirst();
 
@@ -307,26 +310,28 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest {
 		Assertions.assertNotNull(foundPersonOne.getAddress());
 		Assertions.assertNotNull(foundPersonOne.getGender());
 
-		assertEquals(1, foundPersonOne.getId());
+		assertEquals(677, foundPersonOne.getId());
 
-		assertEquals("Bruno", foundPersonOne.getFirstName());
-		assertEquals("Carioca", foundPersonOne.getLastName());
-		assertEquals("Barueri", foundPersonOne.getAddress());
+		assertEquals("Alic", foundPersonOne.getFirstName());
+		assertEquals("Terbrug", foundPersonOne.getLastName());
+		assertEquals("3 Eagle Crest Court", foundPersonOne.getAddress());
 		assertEquals("Male", foundPersonOne.getGender());
+		assertTrue(foundPersonOne.getEnabled());
 
-		PersonVO foundPersonFour = people.get(3);
+		PersonVO foundPersonSix = people.get(5);
 
-		Assertions.assertNotNull(foundPersonFour);
-		Assertions.assertNotNull(foundPersonFour.getId());
-		Assertions.assertNotNull(foundPersonFour.getFirstName());
-		Assertions.assertNotNull(foundPersonFour.getLastName());
-		Assertions.assertNotNull(foundPersonFour.getAddress());
-		Assertions.assertNotNull(foundPersonFour.getGender());
+		Assertions.assertNotNull(foundPersonSix);
+		Assertions.assertNotNull(foundPersonSix.getId());
+		Assertions.assertNotNull(foundPersonSix.getFirstName());
+		Assertions.assertNotNull(foundPersonSix.getLastName());
+		Assertions.assertNotNull(foundPersonSix.getAddress());
+		Assertions.assertNotNull(foundPersonSix.getGender());
 
-		assertEquals("Ericson", foundPersonFour.getFirstName());
-		assertEquals("Williams", foundPersonFour.getLastName());
-		assertEquals("Salto", foundPersonFour.getAddress());
-		assertEquals("Male", foundPersonFour.getGender());
+		assertEquals("Allegra", foundPersonSix.getFirstName());
+		assertEquals("Dome", foundPersonSix.getLastName());
+		assertEquals("57 Roxbury Pass", foundPersonSix.getAddress());
+		assertEquals("Female", foundPersonSix.getGender());
+		assertTrue(foundPersonSix.getEnabled());
 	}
 
 	@Test
