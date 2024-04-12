@@ -336,6 +336,50 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest {
 
 	@Test
 	@Order(7)
+	public void testFindPersonByName() throws JsonProcessingException {
+
+		var wrapper = given().spec(specification)
+				.config(
+					RestAssuredConfig.config()
+					.encoderConfig(
+						EncoderConfig.encoderConfig()
+						.encodeContentTypeAs(
+							TestConfigs.CONTENT_TYPE_YML,
+							ContentType.TEXT)))
+				.contentType(TestConfigs.CONTENT_TYPE_YML)
+				.accept(TestConfigs.CONTENT_TYPE_YML)
+				.pathParam("firstName", "fag")
+				.queryParams("page", 0, "size", 6, "direction", "asc")
+				.when()
+					.get("findPersonByName/{firstName}")
+				.then()
+					.statusCode(200)
+						.extract()
+						.body()
+							.as(PagedModelPerson.class, objectMapper);
+
+		var people = wrapper.getContent();
+
+		PersonVO foundPerson = people.getFirst();
+
+		Assertions.assertNotNull(foundPerson);
+		Assertions.assertNotNull(foundPerson.getId());
+		Assertions.assertNotNull(foundPerson.getFirstName());
+		Assertions.assertNotNull(foundPerson.getLastName());
+		Assertions.assertNotNull(foundPerson.getAddress());
+		Assertions.assertNotNull(foundPerson.getGender());
+
+		assertEquals(7, foundPerson.getId());
+
+		assertEquals("Fagner", foundPerson.getFirstName());
+		assertEquals("Absynth", foundPerson.getLastName());
+		assertEquals("Santo Andre", foundPerson.getAddress());
+		assertEquals("Male", foundPerson.getGender());
+		assertTrue(foundPerson.getEnabled());
+	}
+
+	@Test
+	@Order(8)
 	public void testFindAllWithoutToken() throws JsonProcessingException {
 
 		RequestSpecification specificationWithoutToken = new RequestSpecBuilder()

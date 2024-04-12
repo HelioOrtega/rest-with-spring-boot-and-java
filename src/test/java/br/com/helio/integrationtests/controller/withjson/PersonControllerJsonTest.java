@@ -285,6 +285,44 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 
 	@Test
 	@Order(7)
+	public void testFindPersonByName() throws JsonProcessingException {
+
+		var content = given().spec(specification)
+				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.pathParam("firstName", "fag")
+				.queryParams("page", 0, "size", 6, "direction", "asc")
+				.when()
+					.get("findPersonByName/{firstName}")
+				.then()
+					.statusCode(200)
+						.extract()
+						.body()
+							.asString();
+
+		WrapperPersonVO wrapper = objectMapper.readValue(content, WrapperPersonVO.class);
+
+		var people = wrapper.getEmbedded().getPersons();
+
+		PersonVO foundPersonOne = people.getFirst();
+
+		Assertions.assertNotNull(foundPersonOne);
+		Assertions.assertNotNull(foundPersonOne.getId());
+		Assertions.assertNotNull(foundPersonOne.getFirstName());
+		Assertions.assertNotNull(foundPersonOne.getLastName());
+		Assertions.assertNotNull(foundPersonOne.getAddress());
+		Assertions.assertNotNull(foundPersonOne.getGender());
+
+		assertEquals(7, foundPersonOne.getId());
+
+		assertEquals("Fagner", foundPersonOne.getFirstName());
+		assertEquals("Absynth", foundPersonOne.getLastName());
+		assertEquals("Santo Andre", foundPersonOne.getAddress());
+		assertEquals("Male", foundPersonOne.getGender());
+		assertTrue(foundPersonOne.getEnabled());
+	}
+
+	@Test
+	@Order(8)
 	public void testFindAllWithoutToken() throws JsonProcessingException {
 
 		RequestSpecification specificationWithoutToken = new RequestSpecBuilder()
