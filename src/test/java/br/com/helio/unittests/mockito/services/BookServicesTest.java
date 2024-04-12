@@ -1,4 +1,4 @@
-package br.com.helio.unittests.mockito;
+package br.com.helio.unittests.mockito.services;
 
 import br.com.helio.data.vo.v1.BookVO;
 import br.com.helio.exceptions.RequiredObjectIsNullException;

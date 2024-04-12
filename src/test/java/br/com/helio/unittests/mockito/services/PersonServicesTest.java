@@ -1,4 +1,4 @@
-package br.com.helio.unittests.mockito;
+package br.com.helio.unittests.mockito.services;
 
 import br.com.helio.data.vo.v1.PersonVO;
 import br.com.helio.exceptions.ExceptionResponse;
@@ -27,80 +27,42 @@ import static org.mockito.Mockito.when;
 class PersonServicesTest {
 
     MockPerson input;
+
     @InjectMocks
     private PersonServices service;
 
     @Mock
-    private PersonRepository repository;
+    PersonRepository repository;
 
     @BeforeEach
-    void setUpMocks() {
+    void setUpMocks() throws Exception {
         input = new MockPerson();
         MockitoAnnotations.openMocks(this);
-
     }
 
     @Test
     void testFindById() {
         Person entity = input.mockEntity(1);
         entity.setId(1L);
+
         when(repository.findById(1L)).thenReturn(Optional.of(entity));
 
         var result = service.findById(1L);
         assertNotNull(result);
         assertNotNull(result.getKey());
         assertNotNull(result.getLinks());
-        assertTrue(result.toString().contains("links: [</api/person/v1/1>;rel=\"self\""));
+
+        assertTrue(result.toString().contains("links: [</api/person/v1/1>;rel=\"self\"]"));
         assertEquals("Addres Test1", result.getAddress());
         assertEquals("First Name Test1", result.getFirstName());
         assertEquals("Last Name Test1", result.getLastName());
         assertEquals("Female", result.getGender());
     }
 
-/*    @Test
-    void testFindAll() {
-        List<Person> list = input.mockEntityList();
-        when(repository.findAll()).thenReturn(list);
-
-        var people = service.findAll();
-
-        assertNotNull(people);
-        assertEquals(14, people.size());
-
-        var personOne = people.get(1);
-        assertNotNull(personOne);
-        assertNotNull(personOne.getKey());
-        assertNotNull(personOne.getLinks());
-        assertTrue(personOne.toString().contains("links: [</api/person/v1/1>;rel=\"self\""));
-        assertEquals("Addres Test1", personOne.getAddress());
-        assertEquals("First Name Test1", personOne.getFirstName());
-        assertEquals("Last Name Test1", personOne.getLastName());
-        assertEquals("Female", personOne.getGender());
-
-        var personFour = people.get(4);
-        assertNotNull(personFour);
-        assertNotNull(personFour.getKey());
-        assertNotNull(personFour.getLinks());
-        assertTrue(personFour.toString().contains("links: [</api/person/v1/4>;rel=\"self\""));
-        assertEquals("Addres Test4", personFour.getAddress());
-        assertEquals("First Name Test4", personFour.getFirstName());
-        assertEquals("Last Name Test4", personFour.getLastName());
-        assertEquals("Male", personFour.getGender());
-
-        var personSeven = people.get(7);
-        assertNotNull(personSeven);
-        assertNotNull(personSeven.getKey());
-        assertNotNull(personSeven.getLinks());
-        assertTrue(personSeven.toString().contains("links: [</api/person/v1/7>;rel=\"self\""));
-        assertEquals("Addres Test7", personSeven.getAddress());
-        assertEquals("First Name Test7", personSeven.getFirstName());
-        assertEquals("Last Name Test7", personSeven.getLastName());
-        assertEquals("Female", personSeven.getGender());
-    }*/
-
     @Test
     void testCreate() {
         Person entity = input.mockEntity(1);
+        entity.setId(1L);
 
         Person persisted = entity;
         persisted.setId(1L);
@@ -111,10 +73,12 @@ class PersonServicesTest {
         when(repository.save(entity)).thenReturn(persisted);
 
         var result = service.create(vo);
+
         assertNotNull(result);
         assertNotNull(result.getKey());
         assertNotNull(result.getLinks());
-        assertTrue(result.toString().contains("links: [</api/person/v1/1>;rel=\"self\""));
+
+        assertTrue(result.toString().contains("links: [</api/person/v1/1>;rel=\"self\"]"));
         assertEquals("Addres Test1", result.getAddress());
         assertEquals("First Name Test1", result.getFirstName());
         assertEquals("Last Name Test1", result.getLastName());
@@ -123,9 +87,9 @@ class PersonServicesTest {
 
     @Test
     void testCreateWithNullPerson() {
-
-        Exception exception = assertThrows(RequiredObjectIsNullException.class,
-                () -> service.create(null));
+        Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
+            service.create(null);
+        });
 
         String expectedMessage = "It is not allowed to persist a null object!";
         String actualMessage = exception.getMessage();
@@ -133,10 +97,10 @@ class PersonServicesTest {
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
+
     @Test
     void testUpdate() {
         Person entity = input.mockEntity(1);
-        entity.setId(1L);
 
         Person persisted = entity;
         persisted.setId(1L);
@@ -144,14 +108,17 @@ class PersonServicesTest {
         PersonVO vo = input.mockVO(1);
         vo.setKey(1L);
 
+
         when(repository.findById(1L)).thenReturn(Optional.of(entity));
         when(repository.save(entity)).thenReturn(persisted);
 
         var result = service.update(vo);
+
         assertNotNull(result);
         assertNotNull(result.getKey());
         assertNotNull(result.getLinks());
-        assertTrue(result.toString().contains("links: [</api/person/v1/1>;rel=\"self\""));
+
+        assertTrue(result.toString().contains("links: [</api/person/v1/1>;rel=\"self\"]"));
         assertEquals("Addres Test1", result.getAddress());
         assertEquals("First Name Test1", result.getFirstName());
         assertEquals("Last Name Test1", result.getLastName());
@@ -160,9 +127,9 @@ class PersonServicesTest {
 
     @Test
     void testUpdateWithNullPerson() {
-
-        Exception exception = assertThrows(RequiredObjectIsNullException.class,
-                () -> service.update(null));
+        Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
+            service.update(null);
+        });
 
         String expectedMessage = "It is not allowed to persist a null object!";
         String actualMessage = exception.getMessage();
@@ -174,6 +141,7 @@ class PersonServicesTest {
     void testDelete() {
         Person entity = input.mockEntity(1);
         entity.setId(1L);
+
         when(repository.findById(1L)).thenReturn(Optional.of(entity));
 
         service.delete(1L);

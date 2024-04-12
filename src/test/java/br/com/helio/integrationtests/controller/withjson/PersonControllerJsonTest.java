@@ -289,7 +289,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 
 		var content = given().spec(specification)
 				.contentType(TestConfigs.CONTENT_TYPE_JSON)
-				.pathParam("firstName", "fag")
+				.pathParam("firstName", "ayr")
 				.queryParams("page", 0, "size", 6, "direction", "asc")
 				.when()
 					.get("findPersonByName/{firstName}")
@@ -303,22 +303,22 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 
 		var people = wrapper.getEmbedded().getPersons();
 
-		PersonVO foundPersonOne = people.getFirst();
+		PersonVO foundPerson = people.getFirst();
 
-		Assertions.assertNotNull(foundPersonOne);
-		Assertions.assertNotNull(foundPersonOne.getId());
-		Assertions.assertNotNull(foundPersonOne.getFirstName());
-		Assertions.assertNotNull(foundPersonOne.getLastName());
-		Assertions.assertNotNull(foundPersonOne.getAddress());
-		Assertions.assertNotNull(foundPersonOne.getGender());
+		Assertions.assertNotNull(foundPerson);
+		Assertions.assertNotNull(foundPerson.getId());
+		Assertions.assertNotNull(foundPerson.getFirstName());
+		Assertions.assertNotNull(foundPerson.getLastName());
+		Assertions.assertNotNull(foundPerson.getAddress());
+		Assertions.assertNotNull(foundPerson.getGender());
 
-		assertEquals(7, foundPersonOne.getId());
+		assertEquals(1, foundPerson.getId());
 
-		assertEquals("Fagner", foundPersonOne.getFirstName());
-		assertEquals("Absynth", foundPersonOne.getLastName());
-		assertEquals("Santo Andre", foundPersonOne.getAddress());
-		assertEquals("Male", foundPersonOne.getGender());
-		assertTrue(foundPersonOne.getEnabled());
+		assertEquals("Ayrton", foundPerson.getFirstName());
+		assertEquals("Senna", foundPerson.getLastName());
+		assertEquals("São Paulo", foundPerson.getAddress());
+		assertEquals("Male", foundPerson.getGender());
+		assertTrue(foundPerson.getEnabled());
 	}
 
 	@Test
@@ -341,6 +341,30 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 					.extract()
 					.body()
 						.asString();
+	}
+
+	@Test
+	@Order(9)
+	public void testHateoas() throws JsonProcessingException {
+
+		var content = given().spec(specification)
+				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.queryParams("page", 3, "size", 10, "direction", "asc")
+				.when()
+					.get()
+				.then()
+					.statusCode(200)
+						.extract()
+						.body()
+							.asString();
+
+		assertTrue(content.contains("{\"first\":{\"href\":\"http://localhost:8888/api/person/v1?direction=asc&page=0&size=10&sort=firstName,asc\"}"));
+		assertTrue(content.contains("\"prev\":{\"href\":\"http://localhost:8888/api/person/v1?direction=asc&page=2&size=10&sort=firstName,asc\"}"));
+		assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/person/v1?page=3&size=10&direction=asc\"}"));
+		assertTrue(content.contains("\"next\":{\"href\":\"http://localhost:8888/api/person/v1?direction=asc&page=4&size=10&sort=firstName,asc\"}"));
+		assertTrue(content.contains("\"last\":{\"href\":\"http://localhost:8888/api/person/v1?direction=asc&page=100&size=10&sort=firstName,asc\"}}"));
+
+		assertTrue(content.contains("\"page\":{\"size\":10,\"totalElements\":1009,\"totalPages\":101,\"number\":3}}"));
 	}
 
 	private void mockPerson() {
