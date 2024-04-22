@@ -3,7 +3,7 @@ server:
 cors:
   originPatterns: http://localhost:3000,http://localhost:8080,https://helio.com.br
 file:
-  upload-dir: /dev/files
+  upload-dir: /home/runner/work/rest-with-spring-boot-and-java/UploadDir
 security:
   jwt:
     token:
