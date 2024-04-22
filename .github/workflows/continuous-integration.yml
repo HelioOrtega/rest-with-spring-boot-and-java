@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - Dockerization
+      - AppDockerization
 jobs:
   build:
     runs-on: ubuntu-latest
