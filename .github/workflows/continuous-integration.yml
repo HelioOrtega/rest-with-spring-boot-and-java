@@ -18,20 +18,24 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
     
-    - name: Set up JDK 21
+    - name: Set up JDK 18
       uses: actions/setup-java@v3
       with:
-        java-version: '21'
+        java-version: '18'
         distribution: 'adopt'
         cache: maven
 
     - name: Build Application JAR
-      run: mvn clean package -DskipTests
+      working-directory: ./22_DockerizingOurApp/rest-with-spring-boot-and-java
+      run: mvn clean package
 
     - name: Docker Compose Build
+      working-directory: ./22_DockerizingOurApp
       run: docker compose build
 
     - name: Push to Docker Hub Container Registry
       run: |
+        docker tag ${{ secrets.DOCKER_USERNAME }}/rest-with-spring-boot:latest ${{ secrets.DOCKER_USERNAME }}/rest-with-spring-boot:${{ github.run_id }}
+
         docker push ${{ secrets.DOCKER_USERNAME }}/rest-with-spring-boot:${{ github.run_id }}
         docker push ${{ secrets.DOCKER_USERNAME }}/rest-with-spring-boot:latest
