@@ -3,7 +3,7 @@ name: Continuous Integration with Github Actions
 on:
   push:
     branches:
-      - main
+      - Dockerization
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,11 +25,11 @@ jobs:
         cache: maven
 
     - name: Build Application JAR
-      working-directory: ./Dockerizing/rest-with-spring-boot-and-java
+      working-directory: ./rest-with-spring-boot-and-java
       run: mvn clean package
 
     - name: Docker Compose Build
-      working-directory: ./Dockerizing
+      working-directory: ./
       run: docker compose build
 
     - name: Push to Docker Hub Container Registry
