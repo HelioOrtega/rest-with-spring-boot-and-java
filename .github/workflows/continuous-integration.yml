@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - Dockerization
       - AppDockerization
 jobs:
   build:
