@@ -29,7 +29,8 @@ jobs:
       run: mvn clean package
 
     - name: Docker Compose Build
-      run: docker compose -f docker-compose.yml
+      working-directory: ./rest-with-spring-boot-and-java
+      run: docker compose build
 
     - name: Push to Docker Hub Container Registry
       run: |
